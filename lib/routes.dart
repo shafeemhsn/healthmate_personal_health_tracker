@@ -1,6 +1,6 @@
 class AppRoutes {
   const AppRoutes._();
 
-  static const home = '/';
-  static const records = '/records';
+  static const records = '/';
+  static const home = '/home';
 }
