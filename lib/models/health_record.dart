@@ -8,10 +8,10 @@ class HealthRecord {
     this.userId,
   });
 
-  final String id;
+  final int id;
   final String date;
-  final String steps;
-  final String calories;
-  final String water;
-  final String? userId;
+  final int steps;
+  final int calories;
+  final int water;
+  final int? userId;
 }
