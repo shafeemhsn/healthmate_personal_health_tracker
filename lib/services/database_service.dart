@@ -35,7 +35,6 @@ class DatabaseService {
         await _createHealthRecordsTable(db);
       },
       onOpen: (db) async {
-        // Ensure tables exist when opening an existing database.
         await _createHealthRecordsTable(db);
       },
     );
