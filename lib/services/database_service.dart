@@ -62,7 +62,6 @@ class DatabaseService {
       _stepsColumnName: healthRecord.steps,
       _caloriesColumnName: healthRecord.calories,
       _waterColumnName: healthRecord.water,
-      _healthUserIdColumnName: healthRecord.userId,
     });
   }
 

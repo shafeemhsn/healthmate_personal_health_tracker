@@ -38,10 +38,12 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
         calories: _enteredCalories,
         water: _enteredWater,
       );
+
+      final navigator = Navigator.of(context);
+
       await _healthDbService.addHealthRecord(newItem);
 
-      if (!mounted) return;
-      Navigator.of(context).pop();
+      navigator.pop();
     }
   }
 
