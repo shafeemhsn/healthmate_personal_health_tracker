@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
+
 import 'package:healthmate_personal_health_tracker/models/health_record.dart';
-import 'package:healthmate_personal_health_tracker/routes.dart';
 import 'package:healthmate_personal_health_tracker/services/database_service.dart';
 import 'package:healthmate_personal_health_tracker/widgets/screen_title.dart';
 
-class AddEntryScreen extends StatefulWidget {
-  const AddEntryScreen({super.key});
+class AddRecordScreen extends StatefulWidget {
+  const AddRecordScreen({super.key});
 
   @override
-  State<AddEntryScreen> createState() => _AddEntryScreenState();
+  State<AddRecordScreen> createState() => _AddEntryScreenState();
 }
 
-class _AddEntryScreenState extends State<AddEntryScreen> {
+class _AddEntryScreenState extends State<AddRecordScreen> {
   final DatabaseService _healthDbService = DatabaseService.instance;
 
   final _formKey = GlobalKey<FormState>();

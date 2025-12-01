@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:healthmate_personal_health_tracker/screen/add_entry_screen.dart';
+import 'package:healthmate_personal_health_tracker/screen/add_record_screen.dart';
+import 'package:healthmate_personal_health_tracker/widgets/app_title_logo.dart';
 
 class TabsScreen extends StatefulWidget {
   const TabsScreen({super.key});
@@ -18,14 +19,14 @@ class _TabsScreenState extends State<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
-      appBar: AppBar(title: Text('HealthMate')),
+      appBar: AppBar(title: const AppTitleLogo()),
+
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(
             context,
-          ).push(MaterialPageRoute(builder: (ctx) => const AddEntryScreen()));
+          ).push(MaterialPageRoute(builder: (ctx) => const AddRecordScreen()));
         },
         child: const Icon(Icons.add),
       ),

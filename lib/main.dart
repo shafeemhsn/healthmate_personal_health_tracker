@@ -32,6 +32,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(theme: theme, darkTheme: darkTheme, home: TabsScreen());
+    return MaterialApp(
+      theme: theme,
+      darkTheme: darkTheme,
+      home: const TabsScreen(),
+    );
   }
 }
