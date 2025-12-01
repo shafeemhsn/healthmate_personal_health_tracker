@@ -44,7 +44,7 @@ class DatabaseService {
   Future<void> _createHealthRecordsTable(Database db) async {
     await db.execute(''' 
         CREATE TABLE IF NOT EXISTS $_healthRecordsTableName (
-        $_idColumnName INTEGER PRIMARY KEY,
+        $_idColumnName INTEGER PRIMARY KEY AUTOINCREMENT,
         $_dateColumnName TEXT NOT NULL,
         $_stepsColumnName INTEGER NOT NULL,
         $_caloriesColumnName INTEGER NOT NULL,
@@ -54,16 +54,16 @@ class DatabaseService {
         ''');
   }
 
-  void addHealthRecord(HealthRecord healthRecord) async {
+  Future<void> addHealthRecord(HealthRecord healthRecord) async {
     final db = await database;
+
     await db.insert(_healthRecordsTableName, {
-      _idColumnName: healthRecord.id,
       _dateColumnName: healthRecord.date,
       _stepsColumnName: healthRecord.steps,
       _caloriesColumnName: healthRecord.calories,
       _waterColumnName: healthRecord.water,
       _healthUserIdColumnName: healthRecord.userId,
-    }, conflictAlgorithm: ConflictAlgorithm.replace);
+    });
   }
 
   Future<void> updateHealthRecord(HealthRecord healthRecord) async {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:healthmate_personal_health_tracker/models/health_record.dart';
 import 'package:healthmate_personal_health_tracker/routes.dart';
+import 'package:healthmate_personal_health_tracker/services/database_service.dart';
 import 'package:healthmate_personal_health_tracker/widgets/screen_title.dart';
 
 class AddEntryScreen extends StatefulWidget {
@@ -11,24 +12,36 @@ class AddEntryScreen extends StatefulWidget {
 }
 
 class _AddEntryScreenState extends State<AddEntryScreen> {
+  final DatabaseService _healthDbService = DatabaseService.instance;
+
   final _formKey = GlobalKey<FormState>();
+  final _dateController = TextEditingController();
 
   var _selectedDate = '';
   var _enteredSteps;
   var _enteredCalories;
   var _enteredWater;
 
-  void _saveItem() {
+  @override
+  void dispose() {
+    _dateController.dispose();
+    super.dispose();
+  }
+
+  void _saveItem() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      Navigator.of(context).pop(
-        HealthRecord(
-          date: _selectedDate,
-          steps: _enteredSteps,
-          calories: _enteredCalories,
-          water: _enteredWater,
-        ),
+
+      final newItem = HealthRecord(
+        date: _selectedDate,
+        steps: _enteredSteps,
+        calories: _enteredCalories,
+        water: _enteredWater,
       );
+      await _healthDbService.addHealthRecord(newItem);
+
+      if (!mounted) return;
+      Navigator.of(context).pop();
     }
   }
 
@@ -41,9 +54,12 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
     );
 
     if (picked != null) {
+      final formattedDate =
+          "${picked.day.toString().padLeft(2, '0')}/${picked.month.toString().padLeft(2, '0')}/${picked.year}";
+      if (!mounted) return;
       setState(() {
-        _selectedDate =
-            "${picked.day.toString().padLeft(2, '0')}/${picked.month.toString().padLeft(2, '0')}/${picked.year}";
+        _selectedDate = formattedDate;
+        _dateController.text = formattedDate;
       });
     }
   }
@@ -92,7 +108,7 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
                   children: [
                     // DATE FIELD
                     TextFormField(
-                      initialValue: _selectedDate,
+                      controller: _dateController,
                       readOnly: true,
                       decoration: InputDecoration(
                         labelText: "Date",
@@ -105,16 +121,15 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
                         ),
                       ),
                       validator: (value) {
-                        if (value == null ||
-                            value.isEmpty ||
-                            value.trim().length <= 1 ||
-                            value.trim().length > 50) {
+                        if (_selectedDate.isEmpty ||
+                            _selectedDate.trim().length <= 1 ||
+                            _selectedDate.trim().length > 50) {
                           return 'Please select a date.';
                         }
                         return null;
                       },
                       onSaved: (value) {
-                        _selectedDate = value!;
+                        _selectedDate = _dateController.text;
                       },
                     ),
                     const SizedBox(height: 16),
