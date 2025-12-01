@@ -1,27 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:healthmate_personal_health_tracker/models/health_record.dart';
 import 'package:healthmate_personal_health_tracker/routes.dart';
-import 'package:healthmate_personal_health_tracker/widgets/app_bottom_navigation.dart';
-import 'package:healthmate_personal_health_tracker/widgets/app_floating_action_button.dart';
+import 'package:healthmate_personal_health_tracker/widgets/screen_title.dart';
 
-class AddHealthEntryScreen extends StatefulWidget {
-  const AddHealthEntryScreen({super.key});
+class AddEntryScreen extends StatefulWidget {
+  const AddEntryScreen({super.key});
 
   @override
-  State<AddHealthEntryScreen> createState() => _AddHealthEntryScreenState();
+  State<AddEntryScreen> createState() => _AddEntryScreenState();
 }
 
-class _AddHealthEntryScreenState extends State<AddHealthEntryScreen> {
+class _AddEntryScreenState extends State<AddEntryScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController dateController = TextEditingController();
-  final TextEditingController stepsController = TextEditingController();
-  final TextEditingController caloriesController = TextEditingController();
-  final TextEditingController waterController = TextEditingController();
+  var _selectedDate = '';
+  var _enteredSteps;
+  var _enteredCalories;
+  var _enteredWater;
 
-  @override
-  void initState() {
-    super.initState();
-    dateController.text = "";
+  void _saveItem() {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      Navigator.of(context).pop(
+        HealthRecord(
+          date: _selectedDate,
+          steps: _enteredSteps,
+          calories: _enteredCalories,
+          water: _enteredWater,
+        ),
+      );
+    }
   }
 
   Future<void> _pickDate() async {
@@ -34,7 +42,7 @@ class _AddHealthEntryScreenState extends State<AddHealthEntryScreen> {
 
     if (picked != null) {
       setState(() {
-        dateController.text =
+        _selectedDate =
             "${picked.day.toString().padLeft(2, '0')}/${picked.month.toString().padLeft(2, '0')}/${picked.year}";
       });
     }
@@ -47,16 +55,9 @@ class _AddHealthEntryScreenState extends State<AddHealthEntryScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Text("Add Health Entry"),
-            SizedBox(height: 2),
-            Text(
-              "Record your daily activities",
-              style: TextStyle(fontSize: 14, color: Colors.grey),
-            ),
-          ],
+        title: const ScreenTitle(
+          title: "Add Health Entry",
+          label: "Record your daily activities",
         ),
       ),
       body: SingleChildScrollView(
@@ -65,17 +66,11 @@ class _AddHealthEntryScreenState extends State<AddHealthEntryScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              "Add New Health Record",
+              "Add Your Health Record",
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 4),
-            Text(
-              "Track your daily health activities",
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: colorScheme.onSurfaceVariant,
-              ),
-            ),
-            const SizedBox(height: 20),
+
+            const SizedBox(height: 12),
 
             // CARD
             Container(
@@ -97,7 +92,7 @@ class _AddHealthEntryScreenState extends State<AddHealthEntryScreen> {
                   children: [
                     // DATE FIELD
                     TextFormField(
-                      controller: dateController,
+                      initialValue: _selectedDate,
                       readOnly: true,
                       decoration: InputDecoration(
                         labelText: "Date",
@@ -109,12 +104,23 @@ class _AddHealthEntryScreenState extends State<AddHealthEntryScreen> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
+                      validator: (value) {
+                        if (value == null ||
+                            value.isEmpty ||
+                            value.trim().length <= 1 ||
+                            value.trim().length > 50) {
+                          return 'Please select a date.';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _selectedDate = value!;
+                      },
                     ),
                     const SizedBox(height: 16),
 
                     // STEPS
                     TextFormField(
-                      controller: stepsController,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         labelText: "Steps Walked",
@@ -123,12 +129,23 @@ class _AddHealthEntryScreenState extends State<AddHealthEntryScreen> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
+                      validator: (value) {
+                        if (value == null ||
+                            value.isEmpty ||
+                            int.tryParse(value) == null ||
+                            int.tryParse(value)! <= 0) {
+                          return 'Must be a valid, positive number.';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _enteredSteps = int.parse(value!);
+                      },
                     ),
                     const SizedBox(height: 16),
 
                     // CALORIES
                     TextFormField(
-                      controller: caloriesController,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         labelText: "Calories Burned (kcal)",
@@ -137,12 +154,23 @@ class _AddHealthEntryScreenState extends State<AddHealthEntryScreen> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
+                      validator: (value) {
+                        if (value == null ||
+                            value.isEmpty ||
+                            int.tryParse(value) == null ||
+                            int.tryParse(value)! <= 0) {
+                          return 'Must be a valid, positive number.';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _enteredCalories = int.parse(value!);
+                      },
                     ),
                     const SizedBox(height: 16),
 
                     // WATER
                     TextFormField(
-                      controller: waterController,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         labelText: "Water Intake (ml)",
@@ -151,6 +179,18 @@ class _AddHealthEntryScreenState extends State<AddHealthEntryScreen> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
+                      validator: (value) {
+                        if (value == null ||
+                            value.isEmpty ||
+                            int.tryParse(value) == null ||
+                            int.tryParse(value)! <= 0) {
+                          return 'Must be a valid, positive number.';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _enteredWater = int.parse(value!);
+                      },
                     ),
                     const SizedBox(height: 20),
 
@@ -166,7 +206,7 @@ class _AddHealthEntryScreenState extends State<AddHealthEntryScreen> {
                               ),
                               backgroundColor: colorScheme.primary,
                             ),
-                            onPressed: () {},
+                            onPressed: _saveItem,
                             child: const Text(
                               "Add Record",
                               style: TextStyle(color: Colors.white),
@@ -183,10 +223,7 @@ class _AddHealthEntryScreenState extends State<AddHealthEntryScreen> {
                               ),
                             ),
                             onPressed: () {
-                              Navigator.pushReplacementNamed(
-                                context,
-                                AppRoutes.records,
-                              );
+                              Navigator.of(context).pop();
                             },
                             child: const Text("Cancel"),
                           ),
@@ -200,7 +237,6 @@ class _AddHealthEntryScreenState extends State<AddHealthEntryScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: AppBottomNavigationBar(currentIndex: 0, onTap: null),
     );
   }
 }

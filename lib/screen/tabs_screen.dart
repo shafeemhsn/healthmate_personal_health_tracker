@@ -1,33 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:healthmate_personal_health_tracker/routes.dart';
-import 'package:healthmate_personal_health_tracker/widgets/app_bottom_navigation.dart';
+import 'package:healthmate_personal_health_tracker/screen/add_entry_screen.dart';
 
 class TabsScreen extends StatefulWidget {
   const TabsScreen({super.key});
 
   @override
-  State<TabsScreen> createState() => _TabsScreenState();
+  State<StatefulWidget> createState() => _TabsScreenState();
 }
 
 class _TabsScreenState extends State<TabsScreen> {
+  int _selectedPageIndex = 0;
+  void _selectPage(int index) {
+    setState(() {
+      _selectedPageIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    // TODO: implement build
     return Scaffold(
-      appBar: AppBar(title: const Text('Health Mate')),
-      body: const SizedBox.shrink(),
+      appBar: AppBar(title: Text('HealthMate')),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).pushNamed(AppRoutes.records);
+          Navigator.of(
+            context,
+          ).push(MaterialPageRoute(builder: (ctx) => const AddEntryScreen()));
         },
         child: const Icon(Icons.add),
       ),
-      bottomNavigationBar: AppBottomNavigationBar(
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: _selectPage,
         currentIndex: 0,
-        onTap: (index) {
-          if (index == 1) {
-            Navigator.pushReplacementNamed(context, AppRoutes.records);
-          }
-        },
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Records'),
+        ],
       ),
     );
   }

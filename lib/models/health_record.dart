@@ -1,6 +1,6 @@
 class HealthRecord {
   const HealthRecord({
-    required this.id,
+    this.id,
     required this.date,
     required this.steps,
     required this.calories,
@@ -8,7 +8,7 @@ class HealthRecord {
     this.userId,
   });
 
-  final int id;
+  final int? id;
   final String date;
   final int steps;
   final int calories;
