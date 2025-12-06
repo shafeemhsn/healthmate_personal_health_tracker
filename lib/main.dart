@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:healthmate_personal_health_tracker/screen/tabs_screen.dart';
+import 'package:healthmate_personal_health_tracker/screen/main_tabs_screen.dart';
 
 const Color seedColor = Color(0xFF10B981);
 
@@ -25,11 +25,7 @@ final darkTheme = ThemeData(
 );
 
 void main() {
-  runApp(
-    const ProviderScope(
-      child: MyApp(),
-    ),
-  );
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -40,7 +36,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: theme,
       darkTheme: darkTheme,
-      home: const TabsScreen(),
+      home: const MainTabsScreen(),
     );
   }
 }

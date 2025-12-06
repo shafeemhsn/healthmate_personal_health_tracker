@@ -5,14 +5,14 @@ import 'package:healthmate_personal_health_tracker/screen/dashboard_screen.dart'
 import 'package:healthmate_personal_health_tracker/screen/health_record_screen.dart';
 import 'package:healthmate_personal_health_tracker/widgets/app_title_logo.dart';
 
-class TabsScreen extends StatefulWidget {
-  const TabsScreen({super.key});
+class MainTabsScreen extends StatefulWidget {
+  const MainTabsScreen({super.key});
 
   @override
-  State<StatefulWidget> createState() => _TabsScreenState();
+  State<StatefulWidget> createState() => _MainTabsScreenState();
 }
 
-class _TabsScreenState extends State<TabsScreen> {
+class _MainTabsScreenState extends State<MainTabsScreen> {
   final List<Widget> _pages = const [DashboardScreen(), HealthRecordScreen()];
   int _selectedPageIndex = 0;
   void _selectPage(int index) {
