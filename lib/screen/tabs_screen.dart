@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:healthmate_personal_health_tracker/pages/home_page.dart';
+
 import 'package:healthmate_personal_health_tracker/screen/add_record_screen.dart';
 import 'package:healthmate_personal_health_tracker/screen/dashboard_screen.dart';
 import 'package:healthmate_personal_health_tracker/screen/health_record_screen.dart';
-import 'package:healthmate_personal_health_tracker/screen/records_screen.dart';
 import 'package:healthmate_personal_health_tracker/widgets/app_title_logo.dart';
 
 class TabsScreen extends StatefulWidget {

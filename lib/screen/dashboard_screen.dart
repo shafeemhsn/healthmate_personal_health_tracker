@@ -28,8 +28,9 @@ class DashboardScreen extends ConsumerWidget {
                   physics: const AlwaysScrollableScrollPhysics(),
                   children: [
                     _SummaryCard(
-                      dateLabel:
-                          DateFormat('EEEE, MMM d').format(DateTime.now()),
+                      dateLabel: DateFormat(
+                        'EEEE, MMM d',
+                      ).format(DateTime.now()),
                       totals: totals,
                     ),
                     const SizedBox(height: 14),
@@ -130,11 +131,7 @@ class _SummaryCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: Colors.grey.shade200),
         boxShadow: const [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 8,
-            offset: Offset(0, 3),
-          ),
+          BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, 3)),
         ],
       ),
       child: Column(
@@ -170,7 +167,7 @@ class _SummaryCard extends StatelessWidget {
                   value: totals.calories.toString(),
                   unit: 'kcal',
                   icon: Icons.local_fire_department,
-                  color: Colors.deepOrange,
+                  color: Colors.red,
                 ),
               ),
               const SizedBox(width: 10),
@@ -180,7 +177,7 @@ class _SummaryCard extends StatelessWidget {
                   value: totals.water.toString(),
                   unit: 'ml',
                   icon: Icons.water_drop,
-                  color: Colors.teal,
+                  color: Colors.blue,
                 ),
               ),
             ],
@@ -252,26 +249,14 @@ class _MetricTile extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             label,
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              color: captionColor,
-            ),
+            style: TextStyle(fontWeight: FontWeight.w600, color: captionColor),
           ),
           const SizedBox(height: 6),
           Text(
             value,
-            style: const TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
-          Text(
-            unit,
-            style: TextStyle(
-              color: captionColor,
-              fontSize: 12,
-            ),
-          ),
+          Text(unit, style: TextStyle(color: captionColor, fontSize: 12)),
         ],
       ),
     );
@@ -297,11 +282,7 @@ class _TotalRecordsCard extends StatelessWidget {
           end: Alignment.bottomRight,
         ),
         boxShadow: const [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 6,
-            offset: Offset(0, 3),
-          ),
+          BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, 3)),
         ],
       ),
       child: Row(
@@ -328,11 +309,7 @@ class _TotalRecordsCard extends StatelessWidget {
               ],
             ),
           ),
-          Icon(
-            Icons.monitor_heart,
-            color: Colors.green.shade600,
-            size: 42,
-          ),
+          Icon(Icons.monitor_heart, color: Colors.green.shade600, size: 42),
         ],
       ),
     );
