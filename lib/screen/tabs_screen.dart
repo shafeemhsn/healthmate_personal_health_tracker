@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:healthmate_personal_health_tracker/screen/add_record_screen.dart';
+import 'package:healthmate_personal_health_tracker/screen/add_edit_record_screen.dart';
 import 'package:healthmate_personal_health_tracker/screen/dashboard_screen.dart';
 import 'package:healthmate_personal_health_tracker/screen/health_record_screen.dart';
 import 'package:healthmate_personal_health_tracker/widgets/app_title_logo.dart';
@@ -28,9 +28,9 @@ class _TabsScreenState extends State<TabsScreen> {
       body: _pages[_selectedPageIndex],
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(
-            context,
-          ).push(MaterialPageRoute(builder: (ctx) => const AddRecordScreen()));
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (ctx) => const AddEditRecordScreen()),
+          );
         },
         child: const Icon(Icons.add),
       ),

@@ -5,21 +5,33 @@ import 'package:healthmate_personal_health_tracker/models/health_record.dart';
 import 'package:healthmate_personal_health_tracker/providers/health_records_providers.dart';
 import 'package:healthmate_personal_health_tracker/widgets/screen_title.dart';
 
-class AddRecordScreen extends ConsumerStatefulWidget {
-  const AddRecordScreen({super.key});
+class AddEditRecordScreen extends ConsumerStatefulWidget {
+  const AddEditRecordScreen({super.key, this.existingRecord});
+
+  final HealthRecord? existingRecord;
 
   @override
-  ConsumerState<AddRecordScreen> createState() => _AddEntryScreenState();
+  ConsumerState<AddEditRecordScreen> createState() => _AddEntryScreenState();
 }
 
-class _AddEntryScreenState extends ConsumerState<AddRecordScreen> {
+class _AddEntryScreenState extends ConsumerState<AddEditRecordScreen> {
   final _formKey = GlobalKey<FormState>();
   final _dateController = TextEditingController();
 
   var _selectedDate = '';
-  var _enteredSteps;
-  var _enteredCalories;
-  var _enteredWater;
+  late int _enteredSteps;
+  late int _enteredCalories;
+  late int _enteredWater;
+
+  @override
+  void initState() {
+    super.initState();
+    final record = widget.existingRecord;
+    if (record != null) {
+      _selectedDate = record.date;
+      _dateController.text = record.date;
+    }
+  }
 
   @override
   void dispose() {
@@ -31,16 +43,23 @@ class _AddEntryScreenState extends ConsumerState<AddRecordScreen> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
+      final isEditing = widget.existingRecord != null;
       final newItem = HealthRecord(
+        id: widget.existingRecord?.id,
         date: _selectedDate,
         steps: _enteredSteps,
         calories: _enteredCalories,
         water: _enteredWater,
+        userId: widget.existingRecord?.userId,
       );
 
       final navigator = Navigator.of(context);
 
-      await ref.read(healthRecordsProvider.notifier).addRecord(newItem);
+      if (isEditing) {
+        await ref.read(healthRecordsProvider.notifier).updateRecord(newItem);
+      } else {
+        await ref.read(healthRecordsProvider.notifier).addRecord(newItem);
+      }
 
       navigator.pop();
     }
@@ -69,12 +88,15 @@ class _AddEntryScreenState extends ConsumerState<AddRecordScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final isEditing = widget.existingRecord != null;
 
     return Scaffold(
       appBar: AppBar(
-        title: const ScreenTitle(
-          title: "Add Health Entry",
-          label: "Record your daily activities",
+        title: ScreenTitle(
+          title: isEditing ? "Edit Health Entry" : "Add Health Entry",
+          label: isEditing
+              ? "Update your daily activities"
+              : "Record your daily activities",
         ),
       ),
       body: SingleChildScrollView(
@@ -82,8 +104,8 @@ class _AddEntryScreenState extends ConsumerState<AddRecordScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Add Your Health Record",
+            Text(
+              isEditing ? "Edit Your Health Record" : "Add Your Health Record",
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
 
@@ -138,6 +160,8 @@ class _AddEntryScreenState extends ConsumerState<AddRecordScreen> {
                     // STEPS
                     TextFormField(
                       keyboardType: TextInputType.number,
+                      initialValue:
+                          widget.existingRecord?.steps.toString() ?? '',
                       decoration: InputDecoration(
                         labelText: "Steps Walked",
                         hintText: "e.g., 10000",
@@ -163,6 +187,8 @@ class _AddEntryScreenState extends ConsumerState<AddRecordScreen> {
                     // CALORIES
                     TextFormField(
                       keyboardType: TextInputType.number,
+                      initialValue:
+                          widget.existingRecord?.calories.toString() ?? '',
                       decoration: InputDecoration(
                         labelText: "Calories Burned (kcal)",
                         hintText: "e.g., 2000",
@@ -188,6 +214,8 @@ class _AddEntryScreenState extends ConsumerState<AddRecordScreen> {
                     // WATER
                     TextFormField(
                       keyboardType: TextInputType.number,
+                      initialValue:
+                          widget.existingRecord?.water.toString() ?? '',
                       decoration: InputDecoration(
                         labelText: "Water Intake (ml)",
                         hintText: "e.g., 2000",
@@ -223,9 +251,9 @@ class _AddEntryScreenState extends ConsumerState<AddRecordScreen> {
                               backgroundColor: colorScheme.primary,
                             ),
                             onPressed: _saveItem,
-                            child: const Text(
-                              "Add Record",
-                              style: TextStyle(color: Colors.white),
+                            child: Text(
+                              isEditing ? "Save Changes" : "Add Record",
+                              style: const TextStyle(color: Colors.white),
                             ),
                           ),
                         ),

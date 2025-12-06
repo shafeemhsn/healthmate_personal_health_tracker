@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:healthmate_personal_health_tracker/models/health_record.dart';
 import 'package:intl/intl.dart';
 
+import 'package:healthmate_personal_health_tracker/screen/add_edit_record_screen.dart';
 import 'package:healthmate_personal_health_tracker/providers/health_records_providers.dart';
 import 'package:healthmate_personal_health_tracker/widgets/record_card.dart';
 
@@ -45,8 +46,10 @@ class _HealthRecordScreenState extends ConsumerState<HealthRecordScreen> {
   }
 
   void _onEditRecord(HealthRecord record) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Editing a record is not implemented yet.')),
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => AddEditRecordScreen(existingRecord: record),
+      ),
     );
   }
 
@@ -57,7 +60,6 @@ class _HealthRecordScreenState extends ConsumerState<HealthRecordScreen> {
     final filteredState = ref.watch(filteredHealthRecordsProvider);
     final filterValue = ref.watch(healthRecordDateFilterProvider);
 
-    // Keep controller text in sync with provider.
     if (_filterController.text != filterValue) {
       _filterController.value = _filterController.value.copyWith(
         text: filterValue,
