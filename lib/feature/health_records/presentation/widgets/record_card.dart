@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+
+import 'package:healthmate_personal_health_tracker/core/utils/date_formatter.dart';
 import 'package:healthmate_personal_health_tracker/feature/health_records/data/models/health_record.dart';
-import 'package:intl/intl.dart';
 
 class RecordCard extends StatelessWidget {
   final HealthRecord record;
@@ -16,7 +17,7 @@ class RecordCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final date = _formatDate(record.date);
+    final date = formatDisplayDate(record.date);
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
@@ -128,20 +129,5 @@ class RecordCard extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  String _formatDate(String raw) {
-    // Records are stored as dd/MM/yyyy; gracefully fall back if parsing fails.
-    try {
-      final parsed = DateFormat('dd/MM/yyyy').parseStrict(raw);
-      return DateFormat.yMMMEd().format(parsed);
-    } on FormatException {
-      // Try ISO parsing as a secondary attempt.
-      final parsed = DateTime.tryParse(raw);
-      if (parsed != null) {
-        return DateFormat.yMMMEd().format(parsed);
-      }
-      return raw;
-    }
   }
 }

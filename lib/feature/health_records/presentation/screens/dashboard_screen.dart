@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import 'package:healthmate_personal_health_tracker/core/utils/date_formatter.dart';
 import 'package:healthmate_personal_health_tracker/feature/health_records/data/models/health_record.dart';
 import 'package:healthmate_personal_health_tracker/feature/health_records/presentation/state/health_records_providers.dart';
 
@@ -74,7 +75,7 @@ class DashboardScreen extends ConsumerWidget {
 }
 
 _DailyTotals _calculateTodayTotals(List<HealthRecord> records) {
-  final today = DateFormat('dd/MM/yyyy').format(DateTime.now());
+  final today = todayStorageDate();
   var steps = 0;
   var calories = 0;
   var water = 0;
