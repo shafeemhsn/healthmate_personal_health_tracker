@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:healthmate_personal_health_tracker/models/health_record.dart';
+import 'package:healthmate_personal_health_tracker/widgets/screen_title.dart';
 import 'package:intl/intl.dart';
 
 import 'package:healthmate_personal_health_tracker/screen/add_edit_record_screen.dart';
@@ -68,7 +69,12 @@ class _HealthRecordScreenState extends ConsumerState<HealthRecordScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Health Records')),
+      appBar: AppBar(
+        title: const ScreenTitle(
+          title: "Health Record",
+          label: "View and manage your history",
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(

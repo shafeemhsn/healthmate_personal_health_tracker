@@ -139,14 +139,12 @@ class _SummaryCard extends StatelessWidget {
         children: [
           Text(
             "Today's Summary",
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w700,
-            ),
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 4),
           Text(
             dateLabel,
-            style: theme.textTheme.bodySmall?.copyWith(color: captionColor),
+            style: theme.textTheme.bodyMedium?.copyWith(color: captionColor),
           ),
           const SizedBox(height: 16),
           Row(
