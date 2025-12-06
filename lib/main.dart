@@ -1,28 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 
+import 'package:healthmate_personal_health_tracker/core/theme/app_theme.dart';
 import 'package:healthmate_personal_health_tracker/feature/health_records/presentation/screens/main_tabs_screen.dart';
-
-const Color seedColor = Color(0xFF10B981);
-
-final theme = ThemeData(
-  useMaterial3: true,
-  colorScheme: ColorScheme.fromSeed(
-    seedColor: seedColor,
-    brightness: Brightness.light,
-  ),
-  textTheme: GoogleFonts.latoTextTheme(),
-);
-
-final darkTheme = ThemeData(
-  useMaterial3: true,
-  colorScheme: ColorScheme.fromSeed(
-    seedColor: seedColor,
-    brightness: Brightness.dark,
-  ),
-  textTheme: GoogleFonts.latoTextTheme(),
-);
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -34,8 +14,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: theme,
-      darkTheme: darkTheme,
+      theme: AppTheme.light(),
+      darkTheme: AppTheme.dark(),
       home: const MainTabsScreen(),
     );
   }
