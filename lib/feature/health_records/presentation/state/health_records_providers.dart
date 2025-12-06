@@ -6,9 +6,9 @@ import 'package:healthmate_personal_health_tracker/feature/health_records/data/s
 
 import 'package:healthmate_personal_health_tracker/models/health_record.dart';
 
-class HealthRecordsNotifier
+class HealthRecordsProviders
     extends StateNotifier<AsyncValue<List<HealthRecord>>> {
-  HealthRecordsNotifier(this._repositoryFuture)
+  HealthRecordsProviders(this._repositoryFuture)
     : super(const AsyncValue.loading()) {
     _loadRecords();
   }
@@ -55,14 +55,14 @@ class HealthRecordsNotifier
 
 final healthRecordsProvider =
     StateNotifierProvider<
-      HealthRecordsNotifier,
+      HealthRecordsProviders,
       AsyncValue<List<HealthRecord>>
     >((ref) {
       final repositoryFuture = AppDatabase.instance.database.then(
         (db) => HealthRecordRepository(HealthRecordDao(db)),
       );
 
-      return HealthRecordsNotifier(repositoryFuture);
+      return HealthRecordsProviders(repositoryFuture);
     });
 
 /// Stores the current date filter query (as a raw string).

@@ -4,7 +4,7 @@ import 'package:healthmate_personal_health_tracker/models/health_record.dart';
 import 'package:healthmate_personal_health_tracker/widgets/screen_title.dart';
 import 'package:intl/intl.dart';
 
-import 'package:healthmate_personal_health_tracker/screen/add_edit_record_screen.dart';
+import 'package:healthmate_personal_health_tracker/feature/health_records/presentation/screens/add_edit_record_screen.dart';
 import 'package:healthmate_personal_health_tracker/feature/health_records/presentation/state/health_records_providers.dart';
 import 'package:healthmate_personal_health_tracker/widgets/record_card.dart';
 
