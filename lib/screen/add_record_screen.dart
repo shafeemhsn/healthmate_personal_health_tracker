@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:healthmate_personal_health_tracker/models/health_record.dart';
-import 'package:healthmate_personal_health_tracker/services/database_service.dart';
+import 'package:healthmate_personal_health_tracker/providers/health_records_providers.dart';
 import 'package:healthmate_personal_health_tracker/widgets/screen_title.dart';
 
-class AddRecordScreen extends StatefulWidget {
+class AddRecordScreen extends ConsumerStatefulWidget {
   const AddRecordScreen({super.key});
 
   @override
-  State<AddRecordScreen> createState() => _AddEntryScreenState();
+  ConsumerState<AddRecordScreen> createState() => _AddEntryScreenState();
 }
 
-class _AddEntryScreenState extends State<AddRecordScreen> {
-  final DatabaseService _healthDbService = DatabaseService.instance;
-
+class _AddEntryScreenState extends ConsumerState<AddRecordScreen> {
   final _formKey = GlobalKey<FormState>();
   final _dateController = TextEditingController();
 
@@ -41,7 +40,7 @@ class _AddEntryScreenState extends State<AddRecordScreen> {
 
       final navigator = Navigator.of(context);
 
-      await _healthDbService.addHealthRecord(newItem);
+      await ref.read(healthRecordsProvider.notifier).addRecord(newItem);
 
       navigator.pop();
     }

@@ -49,3 +49,20 @@ final healthRecordsProvider =
       HealthRecordsNotifier,
       AsyncValue<List<HealthRecord>>
     >((ref) => HealthRecordsNotifier(DatabaseService.instance));
+
+/// Stores the current date filter query (as a raw string).
+final healthRecordDateFilterProvider = StateProvider<String>((ref) => '');
+
+/// Derived provider that applies the date filter to the list of records.
+final filteredHealthRecordsProvider =
+    Provider<AsyncValue<List<HealthRecord>>>((ref) {
+  final records = ref.watch(healthRecordsProvider);
+  final query = ref.watch(healthRecordDateFilterProvider).trim().toLowerCase();
+
+  return records.whenData((list) {
+    if (query.isEmpty) return list;
+    return list
+        .where((record) => record.date.toLowerCase().contains(query))
+        .toList();
+  });
+});
