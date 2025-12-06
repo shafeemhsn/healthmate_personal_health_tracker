@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-import 'package:healthmate_personal_health_tracker/models/health_record.dart';
-import 'package:healthmate_personal_health_tracker/providers/health_records_providers.dart';
+import 'package:healthmate_personal_health_tracker/core/constants/app_strings.dart';
+import 'package:healthmate_personal_health_tracker/core/utils/date_formatter.dart';
+import 'package:healthmate_personal_health_tracker/feature/health_records/health_records.dart';
 
 class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
@@ -61,7 +62,7 @@ class DashboardScreen extends ConsumerWidget {
                   ElevatedButton(
                     onPressed: () =>
                         ref.read(healthRecordsProvider.notifier).refresh(),
-                    child: const Text('Retry'),
+                    child: const Text(AppStrings.retry),
                   ),
                 ],
               ),
@@ -74,7 +75,7 @@ class DashboardScreen extends ConsumerWidget {
 }
 
 _DailyTotals _calculateTodayTotals(List<HealthRecord> records) {
-  final today = DateFormat('dd/MM/yyyy').format(DateTime.now());
+  final today = todayStorageDate();
   var steps = 0;
   var calories = 0;
   var water = 0;
@@ -137,7 +138,7 @@ class _SummaryCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             "Today's Summary",
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
@@ -153,7 +154,7 @@ class _SummaryCard extends StatelessWidget {
                 child: _MetricTile(
                   label: 'Steps',
                   value: totals.steps.toString(),
-                  unit: 'steps',
+                  unit: AppStrings.stepsUnit,
                   icon: Icons.directions_walk,
                   color: Colors.indigo,
                 ),
@@ -163,7 +164,7 @@ class _SummaryCard extends StatelessWidget {
                 child: _MetricTile(
                   label: 'Calories',
                   value: totals.calories.toString(),
-                  unit: 'kcal',
+                  unit: AppStrings.caloriesUnit,
                   icon: Icons.local_fire_department,
                   color: Colors.red,
                 ),
@@ -173,7 +174,7 @@ class _SummaryCard extends StatelessWidget {
                 child: _MetricTile(
                   label: 'Water',
                   value: totals.water.toString(),
-                  unit: 'ml',
+                  unit: AppStrings.waterUnit,
                   icon: Icons.water_drop,
                   color: Colors.blue,
                 ),

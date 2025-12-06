@@ -1,21 +1,27 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
-import 'package:healthmate_personal_health_tracker/models/health_record.dart';
-import 'package:healthmate_personal_health_tracker/services/database_service.dart';
+import 'package:healthmate_personal_health_tracker/core/database/app_database.dart';
+import 'package:healthmate_personal_health_tracker/feature/health_records/health_records.dart';
 
-class HealthRecordsNotifier
+class HealthRecordsProviders
     extends StateNotifier<AsyncValue<List<HealthRecord>>> {
-  HealthRecordsNotifier(this._databaseService)
+  HealthRecordsProviders(this._repositoryFuture)
     : super(const AsyncValue.loading()) {
     _loadRecords();
   }
 
-  final DatabaseService _databaseService;
+  final Future<HealthRecordRepository> _repositoryFuture;
+  HealthRecordRepository? _repository;
+
+  Future<HealthRecordRepository> _getRepository() async {
+    return _repository ??= await _repositoryFuture;
+  }
 
   Future<void> _loadRecords() async {
     try {
-      final records = await _databaseService.getHealthRecords();
+      final repository = await _getRepository();
+      final records = await repository.getHealthRecords();
       state = AsyncValue.data(records);
     } catch (error, stack) {
       state = AsyncValue.error(error, stack);
@@ -27,26 +33,35 @@ class HealthRecordsNotifier
   }
 
   Future<void> addRecord(HealthRecord record) async {
-    await _databaseService.addHealthRecord(record);
+    final repository = await _getRepository();
+    await repository.addHealthRecord(record);
     await _loadRecords();
   }
 
   Future<void> updateRecord(HealthRecord record) async {
-    await _databaseService.updateHealthRecord(record);
+    final repository = await _getRepository();
+    await repository.updateHealthRecord(record);
     await _loadRecords();
   }
 
   Future<void> deleteRecord(int id) async {
-    await _databaseService.deleteHealthRecord(id);
+    final repository = await _getRepository();
+    await repository.deleteHealthRecord(id);
     await _loadRecords();
   }
 }
 
 final healthRecordsProvider =
     StateNotifierProvider<
-      HealthRecordsNotifier,
+      HealthRecordsProviders,
       AsyncValue<List<HealthRecord>>
-    >((ref) => HealthRecordsNotifier(DatabaseService.instance));
+    >((ref) {
+      final repositoryFuture = AppDatabase.instance.database.then(
+        (db) => HealthRecordRepository(HealthRecordDao(db)),
+      );
+
+      return HealthRecordsProviders(repositoryFuture);
+    });
 
 /// Stores the current date filter query (as a raw string).
 final healthRecordDateFilterProvider = StateProvider<String>((ref) => '');

@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 
-import 'package:healthmate_personal_health_tracker/screen/add_edit_record_screen.dart';
-import 'package:healthmate_personal_health_tracker/screen/dashboard_screen.dart';
-import 'package:healthmate_personal_health_tracker/screen/health_record_screen.dart';
-import 'package:healthmate_personal_health_tracker/widgets/app_title_logo.dart';
+import 'package:healthmate_personal_health_tracker/feature/health_records/health_records.dart';
 
-class TabsScreen extends StatefulWidget {
-  const TabsScreen({super.key});
+class MainTabsScreen extends StatefulWidget {
+  const MainTabsScreen({super.key});
 
   @override
-  State<StatefulWidget> createState() => _TabsScreenState();
+  State<StatefulWidget> createState() => _MainTabsScreenState();
 }
 
-class _TabsScreenState extends State<TabsScreen> {
+class _MainTabsScreenState extends State<MainTabsScreen> {
   final List<Widget> _pages = const [DashboardScreen(), HealthRecordScreen()];
   int _selectedPageIndex = 0;
   void _selectPage(int index) {
@@ -25,7 +22,10 @@ class _TabsScreenState extends State<TabsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const AppTitleLogo()),
-      body: _pages[_selectedPageIndex],
+      body: IndexedStack(
+        index: _selectedPageIndex,
+        children: _pages,
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).push(

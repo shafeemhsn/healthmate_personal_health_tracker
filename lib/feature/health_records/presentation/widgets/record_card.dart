@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:healthmate_personal_health_tracker/models/health_record.dart';
-import 'package:intl/intl.dart';
+
+import 'package:healthmate_personal_health_tracker/core/constants/app_strings.dart';
+import 'package:healthmate_personal_health_tracker/core/utils/date_formatter.dart';
+import 'package:healthmate_personal_health_tracker/feature/health_records/health_records.dart';
 
 class RecordCard extends StatelessWidget {
   final HealthRecord record;
@@ -16,7 +18,7 @@ class RecordCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final date = _formatDate(record.date);
+    final date = formatDisplayDate(record.date);
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
@@ -24,8 +26,12 @@ class RecordCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(14),
-        boxShadow: [
-          BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, 3)),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 6,
+            offset: Offset(0, 3),
+          ),
         ],
       ),
       child: Column(
@@ -72,21 +78,21 @@ class RecordCard extends StatelessWidget {
             children: [
               _metricCard(
                 value: record.steps.toString(),
-                label: "steps",
+                label: AppStrings.stepsUnit,
                 icon: Icons.directions_walk,
                 color: Colors.indigo.withOpacity(0.1),
                 textColor: Colors.indigo,
               ),
               _metricCard(
                 value: record.calories.toString(),
-                label: "kcal",
+                label: AppStrings.caloriesUnit,
                 icon: Icons.local_fire_department,
                 color: Colors.red.withOpacity(0.1),
                 textColor: Colors.red,
               ),
               _metricCard(
                 value: record.water.toString(),
-                label: "ml",
+                label: AppStrings.waterUnit,
                 icon: Icons.water_drop,
                 color: Colors.blue.withOpacity(0.1),
                 textColor: Colors.blue,
@@ -128,20 +134,5 @@ class RecordCard extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  String _formatDate(String raw) {
-    // Records are stored as dd/MM/yyyy; gracefully fall back if parsing fails.
-    try {
-      final parsed = DateFormat('dd/MM/yyyy').parseStrict(raw);
-      return DateFormat.yMMMEd().format(parsed);
-    } on FormatException {
-      // Try ISO parsing as a secondary attempt.
-      final parsed = DateTime.tryParse(raw);
-      if (parsed != null) {
-        return DateFormat.yMMMEd().format(parsed);
-      }
-      return raw;
-    }
   }
 }

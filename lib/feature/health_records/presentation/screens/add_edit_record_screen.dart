@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:healthmate_personal_health_tracker/models/health_record.dart';
-import 'package:healthmate_personal_health_tracker/providers/health_records_providers.dart';
-import 'package:healthmate_personal_health_tracker/widgets/screen_title.dart';
+import 'package:healthmate_personal_health_tracker/core/constants/app_strings.dart';
+import 'package:healthmate_personal_health_tracker/feature/health_records/health_records.dart';
 
 class AddEditRecordScreen extends ConsumerStatefulWidget {
   const AddEditRecordScreen({super.key, this.existingRecord});
@@ -106,7 +105,7 @@ class _AddEntryScreenState extends ConsumerState<AddEditRecordScreen> {
           children: [
             Text(
               isEditing ? "Edit Your Health Record" : "Add Your Health Record",
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
 
             const SizedBox(height: 12),
@@ -174,7 +173,7 @@ class _AddEntryScreenState extends ConsumerState<AddEditRecordScreen> {
                             value.isEmpty ||
                             int.tryParse(value) == null ||
                             int.tryParse(value)! <= 0) {
-                          return 'Must be a valid, positive number.';
+                          return AppStrings.validationPositiveNumber;
                         }
                         return null;
                       },
@@ -190,8 +189,9 @@ class _AddEntryScreenState extends ConsumerState<AddEditRecordScreen> {
                       initialValue:
                           widget.existingRecord?.calories.toString() ?? '',
                       decoration: InputDecoration(
-                        labelText: "Calories Burned (kcal)",
-                        hintText: "e.g., 2000",
+                        labelText:
+                            "Calories Burned (${AppStrings.caloriesUnit})",
+                        hintText: AppStrings.exampleValue2000,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -201,7 +201,7 @@ class _AddEntryScreenState extends ConsumerState<AddEditRecordScreen> {
                             value.isEmpty ||
                             int.tryParse(value) == null ||
                             int.tryParse(value)! <= 0) {
-                          return 'Must be a valid, positive number.';
+                          return AppStrings.validationPositiveNumber;
                         }
                         return null;
                       },
@@ -217,8 +217,9 @@ class _AddEntryScreenState extends ConsumerState<AddEditRecordScreen> {
                       initialValue:
                           widget.existingRecord?.water.toString() ?? '',
                       decoration: InputDecoration(
-                        labelText: "Water Intake (ml)",
-                        hintText: "e.g., 2000",
+                        labelText:
+                            "Water Intake (${AppStrings.waterUnit})",
+                        hintText: AppStrings.exampleValue2000,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -228,7 +229,7 @@ class _AddEntryScreenState extends ConsumerState<AddEditRecordScreen> {
                             value.isEmpty ||
                             int.tryParse(value) == null ||
                             int.tryParse(value)! <= 0) {
-                          return 'Must be a valid, positive number.';
+                          return AppStrings.validationPositiveNumber;
                         }
                         return null;
                       },
