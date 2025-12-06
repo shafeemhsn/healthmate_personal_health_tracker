@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import 'package:healthmate_personal_health_tracker/core/constants/app_strings.dart';
 import 'package:healthmate_personal_health_tracker/core/utils/date_formatter.dart';
 import 'package:healthmate_personal_health_tracker/feature/health_records/data/models/health_record.dart';
 import 'package:healthmate_personal_health_tracker/feature/health_records/presentation/state/health_records_providers.dart';
@@ -62,7 +63,7 @@ class DashboardScreen extends ConsumerWidget {
                   ElevatedButton(
                     onPressed: () =>
                         ref.read(healthRecordsProvider.notifier).refresh(),
-                    child: const Text('Retry'),
+                    child: const Text(AppStrings.retry),
                   ),
                 ],
               ),
@@ -154,7 +155,7 @@ class _SummaryCard extends StatelessWidget {
                 child: _MetricTile(
                   label: 'Steps',
                   value: totals.steps.toString(),
-                  unit: 'steps',
+                  unit: AppStrings.stepsUnit,
                   icon: Icons.directions_walk,
                   color: Colors.indigo,
                 ),
@@ -164,7 +165,7 @@ class _SummaryCard extends StatelessWidget {
                 child: _MetricTile(
                   label: 'Calories',
                   value: totals.calories.toString(),
-                  unit: 'kcal',
+                  unit: AppStrings.caloriesUnit,
                   icon: Icons.local_fire_department,
                   color: Colors.red,
                 ),
@@ -174,7 +175,7 @@ class _SummaryCard extends StatelessWidget {
                 child: _MetricTile(
                   label: 'Water',
                   value: totals.water.toString(),
-                  unit: 'ml',
+                  unit: AppStrings.waterUnit,
                   icon: Icons.water_drop,
                   color: Colors.blue,
                 ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:healthmate_personal_health_tracker/core/constants/app_strings.dart';
 import 'package:healthmate_personal_health_tracker/core/utils/date_formatter.dart';
 import 'package:healthmate_personal_health_tracker/feature/health_records/data/models/health_record.dart';
 
@@ -73,21 +74,21 @@ class RecordCard extends StatelessWidget {
             children: [
               _metricCard(
                 value: record.steps.toString(),
-                label: "steps",
+                label: AppStrings.stepsUnit,
                 icon: Icons.directions_walk,
                 color: Colors.indigo.withOpacity(0.1),
                 textColor: Colors.indigo,
               ),
               _metricCard(
                 value: record.calories.toString(),
-                label: "kcal",
+                label: AppStrings.caloriesUnit,
                 icon: Icons.local_fire_department,
                 color: Colors.red.withOpacity(0.1),
                 textColor: Colors.red,
               ),
               _metricCard(
                 value: record.water.toString(),
-                label: "ml",
+                label: AppStrings.waterUnit,
                 icon: Icons.water_drop,
                 color: Colors.blue.withOpacity(0.1),
                 textColor: Colors.blue,
