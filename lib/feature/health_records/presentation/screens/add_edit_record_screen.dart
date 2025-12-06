@@ -105,7 +105,7 @@ class _AddEntryScreenState extends ConsumerState<AddEditRecordScreen> {
           children: [
             Text(
               isEditing ? "Edit Your Health Record" : "Add Your Health Record",
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
 
             const SizedBox(height: 12),

@@ -138,7 +138,7 @@ class _SummaryCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             "Today's Summary",
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
