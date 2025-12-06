@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:healthmate_personal_health_tracker/core/constants/app_strings.dart';
 import 'package:healthmate_personal_health_tracker/core/utils/date_formatter.dart';
 import 'package:healthmate_personal_health_tracker/feature/health_records/health_records.dart';
 
@@ -35,12 +34,24 @@ class _HealthRecordScreenState extends ConsumerState<HealthRecordScreen> {
 
     if (picked != null && mounted) {
       final formatted = formatStorageDate(picked);
-      ref.read(healthRecordDateFilterProvider.notifier).state = formatted;
+      _applyFilter(formatted);
     }
   }
 
   void _clearFilter() {
-    ref.read(healthRecordDateFilterProvider.notifier).state = '';
+    _applyFilter('');
+  }
+
+  void _applyFilter(String value) {
+    ref.read(healthRecordDateFilterProvider.notifier).state = value;
+  }
+
+  void _syncFilterController(String value) {
+    if (_filterController.text == value) return;
+    _filterController.value = _filterController.value.copyWith(
+      text: value,
+      selection: TextSelection.collapsed(offset: value.length),
+    );
   }
 
   void _onEditRecord(HealthRecord record) {
@@ -53,17 +64,8 @@ class _HealthRecordScreenState extends ConsumerState<HealthRecordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final recordsState = ref.watch(healthRecordsProvider);
-    final filteredState = ref.watch(filteredHealthRecordsProvider);
     final filterValue = ref.watch(healthRecordDateFilterProvider);
-
-    if (_filterController.text != filterValue) {
-      _filterController.value = _filterController.value.copyWith(
-        text: filterValue,
-        selection: TextSelection.collapsed(offset: filterValue.length),
-      );
-    }
+    _syncFilterController(filterValue);
 
     return Scaffold(
       appBar: AppBar(
@@ -76,191 +78,23 @@ class _HealthRecordScreenState extends ConsumerState<HealthRecordScreen> {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            _DateFilter(
+            DateFilterField(
               controller: _filterController,
-              onChanged: (value) =>
-                  ref.read(healthRecordDateFilterProvider.notifier).state =
-                      value,
+              onChanged: _applyFilter,
               onPickDate: _pickFilterDate,
               onClear: _clearFilter,
             ),
             const SizedBox(height: 12),
             Expanded(
-              child: RefreshIndicator(
+              child: HealthRecordListView(
                 onRefresh: _refreshRecords,
-                child: filteredState.when(
-                  data: (filtered) {
-                    final baseRecords =
-                        recordsState.asData?.value ?? const <HealthRecord>[];
-                    if (baseRecords.isEmpty) {
-                      return const _EmptyState(
-                        message: 'No records yet. Add your first entry.',
-                      );
-                    }
-
-                    if (filtered.isEmpty) {
-                      return _EmptyState(
-                        message: 'No records match this date filter.',
-                        hint: 'Try a different date or clear the filter.',
-                        onClearFilter: filterValue.isEmpty
-                            ? null
-                            : _clearFilter,
-                      );
-                    }
-
-                    return ListView.separated(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      itemCount: filtered.length,
-                      separatorBuilder: (_, __) => const SizedBox(height: 12),
-                      itemBuilder: (context, index) {
-                        final record = filtered[index];
-                        return RecordCard(
-                          record: record,
-                          onDelete: record.id != null
-                              ? () => ref
-                                    .read(healthRecordsProvider.notifier)
-                                    .deleteRecord(record.id!)
-                              : () {},
-                          onEdit: () => _onEditRecord(record),
-                        );
-                      },
-                    );
-                  },
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
-                  error: (error, stackTrace) => ListView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    children: [
-                      const SizedBox(height: 120),
-                      Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              'Unable to load records',
-                              style: theme.textTheme.titleMedium,
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              error.toString(),
-                              textAlign: TextAlign.center,
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: theme.colorScheme.error,
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-                          ElevatedButton(
-                            onPressed: _refreshRecords,
-                            child: const Text(AppStrings.retry),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                  ),
-                ),
+                onEditRecord: _onEditRecord,
+                onClearFilter: _clearFilter,
               ),
             ),
           ],
         ),
       ),
-    );
-  }
-}
-
-class _DateFilter extends StatelessWidget {
-  const _DateFilter({
-    required this.controller,
-    required this.onChanged,
-    required this.onPickDate,
-    required this.onClear,
-  });
-
-  final TextEditingController controller;
-  final ValueChanged<String> onChanged;
-  final VoidCallback onPickDate;
-  final VoidCallback onClear;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      controller: controller,
-      decoration: InputDecoration(
-        labelText: 'Filter by date',
-        hintText: storageDatePattern,
-        prefixIcon: const Icon(Icons.search),
-        suffixIcon: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (controller.text.isNotEmpty)
-              IconButton(
-                icon: const Icon(Icons.clear),
-                onPressed: onClear,
-                tooltip: AppStrings.clearFilter,
-              ),
-            IconButton(
-              icon: const Icon(Icons.date_range),
-              onPressed: onPickDate,
-              tooltip: 'Pick date',
-            ),
-          ],
-        ),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-      ),
-      onChanged: onChanged,
-    );
-  }
-}
-
-class _EmptyState extends StatelessWidget {
-  const _EmptyState({required this.message, this.hint, this.onClearFilter});
-
-  final String message;
-  final String? hint;
-  final VoidCallback? onClearFilter;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final widgets = <Widget>[
-      Text(
-        message,
-        style: theme.textTheme.titleMedium,
-        textAlign: TextAlign.center,
-      ),
-    ];
-
-    if (hint != null) {
-      widgets.addAll([
-        const SizedBox(height: 6),
-        Text(
-          hint!,
-          style: theme.textTheme.bodySmall?.copyWith(
-            color: theme.colorScheme.onSurfaceVariant,
-          ),
-          textAlign: TextAlign.center,
-        ),
-      ]);
-    }
-
-    if (onClearFilter != null) {
-      widgets.addAll([
-        const SizedBox(height: 10),
-        TextButton(
-          onPressed: onClearFilter,
-          child: const Text(AppStrings.clearFilter),
-        ),
-      ]);
-    }
-
-    return ListView(
-      physics: const AlwaysScrollableScrollPhysics(),
-      children: [
-        const SizedBox(height: 120),
-        Center(
-          child: Column(mainAxisSize: MainAxisSize.min, children: widgets),
-        ),
-      ],
     );
   }
 }

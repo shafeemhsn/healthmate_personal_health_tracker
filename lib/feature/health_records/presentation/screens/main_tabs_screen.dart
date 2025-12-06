@@ -22,7 +22,10 @@ class _MainTabsScreenState extends State<MainTabsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const AppTitleLogo()),
-      body: _pages[_selectedPageIndex],
+      body: IndexedStack(
+        index: _selectedPageIndex,
+        children: _pages,
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).push(

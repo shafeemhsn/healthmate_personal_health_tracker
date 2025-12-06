@@ -9,3 +9,5 @@ export 'presentation/screens/main_tabs_screen.dart';
 export 'presentation/widgets/app_title_logo.dart';
 export 'presentation/widgets/record_card.dart';
 export 'presentation/widgets/screen_title.dart';
+export 'presentation/widgets/date_filter_field.dart';
+export 'presentation/widgets/health_record_list_view.dart';
