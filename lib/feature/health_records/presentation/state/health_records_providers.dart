@@ -4,7 +4,7 @@ import 'package:healthmate_personal_health_tracker/core/database/app_database.da
 import 'package:healthmate_personal_health_tracker/feature/health_records/data/repository/health_record_repository.dart';
 import 'package:healthmate_personal_health_tracker/feature/health_records/data/sources/health_record_dao.dart';
 
-import 'package:healthmate_personal_health_tracker/models/health_record.dart';
+import 'package:healthmate_personal_health_tracker/feature/health_records/data/models/health_record.dart';
 
 class HealthRecordsProviders
     extends StateNotifier<AsyncValue<List<HealthRecord>>> {

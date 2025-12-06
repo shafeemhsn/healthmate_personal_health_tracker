@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:healthmate_personal_health_tracker/models/health_record.dart';
+import 'package:healthmate_personal_health_tracker/feature/health_records/data/models/health_record.dart';
 import 'package:intl/intl.dart';
 
 class RecordCard extends StatelessWidget {

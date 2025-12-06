@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-import 'package:healthmate_personal_health_tracker/models/health_record.dart';
+import 'package:healthmate_personal_health_tracker/feature/health_records/data/models/health_record.dart';
 import 'package:healthmate_personal_health_tracker/feature/health_records/presentation/state/health_records_providers.dart';
 
 class DashboardScreen extends ConsumerWidget {
