@@ -4,8 +4,6 @@ import 'package:flutter_riverpod/legacy.dart';
 import 'package:healthmate_personal_health_tracker/models/health_record.dart';
 import 'package:healthmate_personal_health_tracker/services/database_service.dart';
 
-/// StateNotifier that keeps the local list of health records in sync with
-/// the SQLite database.
 class HealthRecordsNotifier
     extends StateNotifier<AsyncValue<List<HealthRecord>>> {
   HealthRecordsNotifier(this._databaseService)
@@ -54,8 +52,9 @@ final healthRecordsProvider =
 final healthRecordDateFilterProvider = StateProvider<String>((ref) => '');
 
 /// Derived provider that applies the date filter to the list of records.
-final filteredHealthRecordsProvider =
-    Provider<AsyncValue<List<HealthRecord>>>((ref) {
+final filteredHealthRecordsProvider = Provider<AsyncValue<List<HealthRecord>>>((
+  ref,
+) {
   final records = ref.watch(healthRecordsProvider);
   final query = ref.watch(healthRecordDateFilterProvider).trim().toLowerCase();
 
