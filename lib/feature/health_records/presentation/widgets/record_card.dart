@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:healthmate_personal_health_tracker/core/constants/app_strings.dart';
 import 'package:healthmate_personal_health_tracker/core/utils/date_formatter.dart';
-import 'package:healthmate_personal_health_tracker/feature/health_records/data/models/health_record.dart';
+import 'package:healthmate_personal_health_tracker/feature/health_records/health_records.dart';
 
 class RecordCard extends StatelessWidget {
   final HealthRecord record;

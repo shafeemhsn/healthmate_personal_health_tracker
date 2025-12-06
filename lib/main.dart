@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:healthmate_personal_health_tracker/core/theme/app_theme.dart';
-import 'package:healthmate_personal_health_tracker/feature/health_records/presentation/screens/main_tabs_screen.dart';
+import 'package:healthmate_personal_health_tracker/feature/health_records/health_records.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));

@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:healthmate_personal_health_tracker/core/constants/app_strings.dart';
-import 'package:healthmate_personal_health_tracker/feature/health_records/data/models/health_record.dart';
-import 'package:healthmate_personal_health_tracker/feature/health_records/presentation/state/health_records_providers.dart';
-import 'package:healthmate_personal_health_tracker/feature/health_records/presentation/widgets/screen_title.dart';
+import 'package:healthmate_personal_health_tracker/feature/health_records/health_records.dart';
 
 class AddEditRecordScreen extends ConsumerStatefulWidget {
   const AddEditRecordScreen({super.key, this.existingRecord});

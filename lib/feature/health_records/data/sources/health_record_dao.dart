@@ -1,7 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 
-import 'package:healthmate_personal_health_tracker/feature/health_records/data/models/health_record.dart';
 import 'package:healthmate_personal_health_tracker/core/database/health_record_table.dart';
+import 'package:healthmate_personal_health_tracker/feature/health_records/health_records.dart';
 
 class HealthRecordDao {
   final Database db;

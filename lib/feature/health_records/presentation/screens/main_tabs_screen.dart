@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:healthmate_personal_health_tracker/feature/health_records/presentation/screens/add_edit_record_screen.dart';
-import 'package:healthmate_personal_health_tracker/feature/health_records/presentation/screens/dashboard_screen.dart';
-import 'package:healthmate_personal_health_tracker/feature/health_records/presentation/screens/health_record_screen.dart';
-import 'package:healthmate_personal_health_tracker/feature/health_records/presentation/widgets/app_title_logo.dart';
+import 'package:healthmate_personal_health_tracker/feature/health_records/health_records.dart';
 
 class MainTabsScreen extends StatefulWidget {
   const MainTabsScreen({super.key});

@@ -3,11 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:healthmate_personal_health_tracker/core/constants/app_strings.dart';
 import 'package:healthmate_personal_health_tracker/core/utils/date_formatter.dart';
-import 'package:healthmate_personal_health_tracker/feature/health_records/data/models/health_record.dart';
-import 'package:healthmate_personal_health_tracker/feature/health_records/presentation/widgets/screen_title.dart';
-import 'package:healthmate_personal_health_tracker/feature/health_records/presentation/screens/add_edit_record_screen.dart';
-import 'package:healthmate_personal_health_tracker/feature/health_records/presentation/state/health_records_providers.dart';
-import 'package:healthmate_personal_health_tracker/feature/health_records/presentation/widgets/record_card.dart';
+import 'package:healthmate_personal_health_tracker/feature/health_records/health_records.dart';
 
 class HealthRecordScreen extends ConsumerStatefulWidget {
   const HealthRecordScreen({super.key});

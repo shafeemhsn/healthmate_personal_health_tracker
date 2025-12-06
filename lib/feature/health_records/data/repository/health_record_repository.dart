@@ -1,5 +1,4 @@
-import 'package:healthmate_personal_health_tracker/feature/health_records/data/sources/health_record_dao.dart';
-import 'package:healthmate_personal_health_tracker/feature/health_records/data/models/health_record.dart';
+import 'package:healthmate_personal_health_tracker/feature/health_records/health_records.dart';
 
 class HealthRecordRepository {
   final HealthRecordDao dao;
